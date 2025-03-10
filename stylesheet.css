@@ -1,0 +1,430 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background: linear-gradient(to bottom right, #e0e0e0, #c770f0);
+    overflow-x: hidden; /* Prevent horizontal scroll on smaller screens */
+    overflow-y: hidden; /* Prevent horizontal scroll on smaller screens */
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    background-image: linear-gradient(to left, #390f35, #aa54ff);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    margin-bottom: 20px;
+}
+
+#question-container {
+    background-color: transparent;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 90%;
+    margin-bottom: 30px;
+    position: relative;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 0;
+}
+
+#question-container.hidden {
+    opacity: 0;
+    transform: translateX(-100%);
+}
+
+#question {
+    font-size: 1.2rem;
+    color: #f9ebff;
+}
+
+#question-card {
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    backface-visibility: hidden;
+    opacity: 1;
+}
+
+#question-card.hidden {
+    opacity: 0;
+    transform: rotateY(-180deg);
+}
+
+.card {
+    width: 90%;
+    max-width: 350px;
+    min-height: 200px;
+    background-color: #4158D0;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+    border-radius: 8px;
+    color: white;
+    overflow: hidden;
+    position: relative;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: transform 0.5s ease-in-out;
+    cursor: pointer;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.highlighted-card {
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    border: 3px solid #ff6b6b;
+    border-radius: 8px;
+    font-weight: bold;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+
+.highlighted-header {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: darkred;
+    display: none;
+}
+
+.highlighted-card .highlighted-header {
+    display: block;
+}
+
+.card-content {
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    gap: 5px;
+    color: white;
+}
+
+.card-content .card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: inherit;
+    text-transform: uppercase;
+    gap: 5px;
+}
+
+.card-content .card-para {
+    color: inherit;
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+.card:hover {
+    transform: rotateY(10deg) rotateX(10deg) scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+#card-frame {
+    width: 95%;
+    max-width: 370px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: content-box;
+    position: relative;
+    background: transparent;
+}
+
+button {
+    font-size: 1.2rem;
+    border-radius: 0.5em;
+    border: none;
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 2px 2px 3px #000000b4;
+    width: 100%;
+    /* max-width: 200px; */
+    height: 40px;
+    max-width: 200px;
+    margin: 0;
+}
+
+.container {
+    position: relative;
+    background: linear-gradient(90deg, #03a9f4, #f441a5);
+    border-radius: 0.7em;
+    transition: all 0.4s ease;
+    display: inline-block;
+    width: 100%;
+    /* max-width: 200px; */
+    height: 40px;
+    max-width: 200px;
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    background: inherit;
+    border-radius: inherit;
+    z-index: -10;
+    filter: blur(0);
+    transition: filter 0.4s ease;
+}
+
+.container:hover::before {
+    filter: blur(1.2em);
+}
+
+.container:active::before {
+    filter: blur(0.2em);
+}
+
+#button-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    width: 90%;
+    /* max-width: 400px; */
+    height: 40px;
+    max-width: 200px;
+}
+
+#completion-message {
+    font-size: 1.4rem;
+    color: darkblue;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+#completion-message.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.photo {
+    position: absolute;
+    width: 40%; /* Percentage width for responsiveness */
+    max-width: 200px; /* Set a maximum width */
+    max-height: 25vh; /* Key: Set a maximum height relative to viewport height */
+    height: auto;
+    transition: transform 0.5s ease-in-out;
+    bottom: -15%; /* Adjust as needed */
+    object-fit: contain; /* Prevent image distortion */
+    z-index: -1;
+}
+
+#man-photo, #woman-photo {
+    position: absolute;
+    max-width: 200px;
+    max-height: 25vh;
+    height: auto;
+    transition: transform 0.5s ease-in-out;
+    bottom: -15%;
+    object-fit: contain;
+}
+
+#man-photo {
+    left: 20%; /* Use percentage for left positioning */
+    /*right: calc(50% + 200px); /* Adjust positioning */
+    transform: translateX(-10%); /* Center the image */
+}
+
+#woman-photo {
+    right: 20%; /* Use percentage for right positioning */
+    /*left: calc(50% + 200px); /* Adjust positioning */
+    transform: translateX(10%); /* Center the image */
+}
+
+
+/* Media Query for smaller screens */
+@media (max-width: 1300px) {
+    #man-photo, #woman-photo {
+        width: 45%; /* Slightly larger on smaller screens */
+        max-width: 200px; /* Adjust max-width as needed */
+        bottom: -20%; /* Adjust bottom position if needed */
+    }
+
+    #man-photo {
+        left: 10%;
+        transform: translateX(-5%);
+    }
+
+    #woman-photo {
+        right: 10%;
+        transform: translateX(5%);
+    }
+
+    #card-frame {
+        width: 90%; /* Occupy more width on smaller screens */
+        max-width: 350px; /* Adjust max-width as needed */
+    }
+
+    .card {
+        width: 90%;
+        max-width: 300px; /* Adjust max-width as needed */
+    }
+
+    /* Adjust other elements as needed for smaller screens */
+    h1 {
+        font-size: 2rem; /* Example: reduce font size */
+    }
+
+    #question {
+        font-size: 1rem; /* Example: reduce font size */
+    }
+
+    button, .container {
+        font-size: 1rem;
+        max-width: 180px;
+        height: 35px;
+    }
+
+    #button-wrapper {
+        max-width: 180px;
+    }
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 800px) {
+    #man-photo, #woman-photo {
+        width: 45%; /* Slightly larger on smaller screens */
+        max-width: 150px; /* Adjust max-width as needed */
+        bottom: -20%; /* Adjust bottom position if needed */
+    }
+
+    #man-photo {
+        left: 10%;
+        transform: translateX(-5%);
+    }
+
+    #woman-photo {
+        right: 10%;
+        transform: translateX(5%);
+    }
+
+    #card-frame {
+        width: 90%; /* Occupy more width on smaller screens */
+        max-width: 350px; /* Adjust max-width as needed */
+    }
+
+    .card {
+        width: 90%;
+        max-width: 300px; /* Adjust max-width as needed */
+    }
+
+    /* Adjust other elements as needed for smaller screens */
+    h1 {
+        font-size: 2rem; /* Example: reduce font size */
+    }
+
+    #question {
+        font-size: 1rem; /* Example: reduce font size */
+    }
+
+    button, .container {
+        font-size: 1rem;
+        max-width: 180px;
+        height: 35px;
+    }
+
+    #button-wrapper {
+        max-width: 180px;
+    }
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 200px) {
+    #man-photo, #woman-photo {
+        width: 45%; /* Slightly larger on smaller screens */
+        max-width: 80px; /* Adjust max-width as needed */
+        bottom: -20%; /* Adjust bottom position if needed */
+    }
+
+    #man-photo {
+        left: 5%;
+        transform: translateX(-5%);
+    }
+
+    #woman-photo {
+        right: 5%;
+        transform: translateX(5%);
+    }
+
+    #card-frame {
+        width: 90%; /* Occupy more width on smaller screens */
+        max-width: 350px; /* Adjust max-width as needed */
+    }
+
+    .card {
+        width: 90%;
+        max-width: 300px; /* Adjust max-width as needed */
+    }
+
+    /* Adjust other elements as needed for smaller screens */
+    h1 {
+        font-size: 2rem; /* Example: reduce font size */
+    }
+
+    #question {
+        font-size: 1rem; /* Example: reduce font size */
+    }
+
+    button, .container {
+        font-size: 1rem;
+        max-width: 180px;
+        height: 35px;
+    }
+
+    #button-wrapper {
+        max-width: 180px;
+    }
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less */
+    max-width: 400px; /* Limit width */
+    border-radius: 8px; /* Rounded corners  */
+    text-align: center;
+    position: relative; /* Needed for z-index */
+    z-index: 2; /* Buttons above content */
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    position: relative; /* Needed for z-index */
+    z-index: 3; /* Buttons above content */
+}
