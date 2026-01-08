@@ -87,6 +87,20 @@
             margin-left: auto;
             margin-right: auto;
         }
+        #start-error-message {
+            color: #ff4444;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 500;
+            display: none;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -117,6 +131,7 @@
                 <button id="upload-button" class="button">העלאת שאלות</button>
             </div>
         </div>
+        <div id="start-error-message">⚠️ יש להעלות שאלות לפני תחילת המשחק!</div>
     </div>
 
     <div id="instructions-container">
@@ -206,7 +221,7 @@
     </div>
     
 
-    <div id="question-container">
+    <div id="question-container" class="hidden">
         <div id="card-frame">
             <div id="question-card" class="card">
                 <div class="card-content">
@@ -306,9 +321,32 @@
             });
         });
 
-        startButton.addEventListener("click", () => {
+        startButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const errorMessage = document.getElementById("start-error-message");
+            
+            console.log("Start button clicked - questionsLoaded:", questionsLoaded, "questions.length:", questions.length);
+            
+            if (!questionsLoaded || questions.length === 0) {
+                console.log("Showing error message");
+                errorMessage.style.display = "block";
+                setTimeout(() => {
+                    errorMessage.style.display = "none";
+                }, 3000);
+                return;
+            }
+            
+            console.log("Starting game");
+            errorMessage.style.display = "none";
             fadeOut(menuContainer, () => menuContainer.style.display = "none");
             fadeOut(instructionsContainer, () => instructionsContainer.style.display = "none");
+            
+            // Initialize and show the game
+            document.getElementById("question-container").classList.remove("hidden");
+            initializeImagePositions();
+            displayQuestion();
         });
 
         function fadeOut(element, callback) {
@@ -339,6 +377,7 @@
         let questions = [];
         let usedQuestions = [];
         let currentQuestionIndex = -1;
+        let questionsLoaded = false;
 
         let manUp;
         let womanUp;
@@ -406,6 +445,7 @@
                 // Parse and load the questions
                 questions = validationResult.questions;
                 usedQuestions = [];
+                questionsLoaded = true;
                 
                 showUploadMessage('✓ השאלות נטענו בהצלחה! (' + questions.length + ' שאלות)', 'success');
                 
@@ -415,10 +455,6 @@
                     document.getElementById("upload-message").textContent = "";
                     document.getElementById("upload-message").className = "upload-message";
                     event.target.value = '';
-                    
-                    // Restart the game with new questions
-                    initializeImagePositions();
-                    displayQuestion();
                 }, 2000);
                 
             } catch (error) {
@@ -504,6 +540,13 @@
         async function loadQuestions() {
             try {
                 const response = await fetch('questions.txt');
+                
+                // Check if the fetch was successful
+                if (!response.ok) {
+                    console.log('No default questions.txt file found - user must upload questions');
+                    return;
+                }
+                
                 const text = await response.text();
                 const lines = text.trim().split('\n');
                 
@@ -522,12 +565,11 @@
                         };
                     });
                 
-                // Initialize the game after questions are loaded
-                initializeImagePositions();
-                displayQuestion();
+                questionsLoaded = true;
+                console.log('Default questions loaded:', questions.length);
             } catch (error) {
                 console.error('Error loading questions:', error);
-                alert('שגיאה בטעינת השאלות. אנא וודא שקובץ questions.txt קיים בתיקייה.');
+                // Silently fail - user will need to upload questions manually
             }
         }
 
@@ -668,7 +710,7 @@
             };
         }
 
-        // Load questions and start the game
+        // Try to load default questions if available
         loadQuestions();
     </script>
 
