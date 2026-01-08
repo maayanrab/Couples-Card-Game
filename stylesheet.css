@@ -229,7 +229,7 @@ button {
     --photo-down: -50%;
     --photo-up: calc(-50% - 18vh);
     position: absolute;
-    top: 55%;
+    top: 65%;
     width: clamp(120px, 30vw, 220px);
     max-height: clamp(110px, 24vh, 220px);
     height: auto;
@@ -243,7 +243,7 @@ button {
 
 #man-photo, #woman-photo {
     position: absolute;
-    top: 55%;
+    top: 65%;
     width: clamp(120px, 30vw, 220px);
     max-height: clamp(110px, 24vh, 220px);
     height: auto;
@@ -269,7 +269,7 @@ button {
         --photo-up: calc(-50% - 16vh);
         width: clamp(110px, 32vw, 200px);
         max-height: clamp(100px, 22vh, 200px);
-        top: 55%;
+        top: 65%;
     }
 
     #man-photo {
@@ -319,7 +319,7 @@ button {
         --photo-up: calc(-50% - 14vh);
         width: clamp(110px, 38vw, 180px);
         max-height: clamp(90px, 20vh, 180px);
-        top: 55%;
+        top: 65%;
     }
 
     #man-photo {
