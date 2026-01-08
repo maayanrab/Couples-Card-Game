@@ -1,0 +1,34 @@
+# QUESTIONS FILE FORMAT GUIDE
+# --------------------------
+# Each line in this file represents a question or task in the game.
+# Format: NUMBER, TEXT
+#
+# The number can be:
+#   0 = Regular question (individual player's turn)
+#   1 = Shared task (highlighted, doesn't count as a turn)
+#
+# Examples:
+# 0, What do you love most about our relationship?
+# 1, Time to take a shot!
+#
+# Lines starting with # are comments and will be ignored.
+# --------------------------
+
+0, PLACEHOLDER 1
+0, PLACEHOLDER 2
+0, PLACEHOLDER 3
+0, PLACEHOLDER 4
+0, PLACEHOLDER 5
+0, PLACEHOLDER 6
+0, PLACEHOLDER 7
+0, PLACEHOLDER 8
+0, PLACEHOLDER 9
+0, PLACEHOLDER 10
+1, PLACEHOLDER 11
+1, PLACEHOLDER 12
+1, PLACEHOLDER 13
+1, PLACEHOLDER 14
+1, PLACEHOLDER 15
+1, PLACEHOLDER 16
+1, PLACEHOLDER 17
+1, PLACEHOLDER 18
