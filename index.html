@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ערב הדייט של בו ובייב</title>
+    <title>ערב דייט</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link href="stylesheet.css" rel="stylesheet">
     <style>
@@ -35,12 +35,76 @@
             /* font-size: 24px; */
             margin-bottom: 20px;
         }
+        #names-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #03a9f4, #f441a5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        #names-modal .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        #names-modal h2 {
+            margin-bottom: 30px;
+            color: #333;
+        }
+        #names-modal input {
+            width: 250px;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+        #names-modal input:focus {
+            outline: none;
+            border-color: #f441a5;
+        }
+        #names-modal .button {
+            margin: 0;
+            padding: 0;
+            line-height: 40px;
+            height: 40px;
+        }
+        #names-modal .container {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
 </head>
 <body>
 
-    <div id="menu-container">
-        <h1 style="font-size: 60px; background-image: linear-gradient(to left, #ffffff, #e889d5);">ערב הדייט של בו ובייב 💋</h1>
+    <div id="names-modal">
+        <div class="modal-content">
+            <h2>🎮 ברוכים הבאים למשחק! 🎮</h2>
+            <p style="margin-bottom: 20px;">הזינו את שמות השחקנים:</p>
+            <input type="text" id="player1-name" placeholder="מר" maxlength="15">
+            <input type="text" id="player2-name" placeholder="גברת" maxlength="15">
+            <div class="container">
+                <button id="names-submit" class="button">המשך</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="menu-container" style="display: none;">
+        <h1 id="menu-header" style="font-size: 60px; background-image: linear-gradient(to left, #ffffff, #e889d5);">ערב הדייט של בו ובייב 💋</h1>
 
         <div id="button-wrapper">
             <div class="container">
@@ -93,7 +157,7 @@
         </div>
     </div>
 
-    <h1>ערב הדייט של בו ובייב 💋</h1><br><br>
+    <h1 id="game-header">ערב הדייט של בו ובייב 💋</h1><br><br>
 
     <div id="reset-modal" class="modal">
         <div class="modal-content">
@@ -172,6 +236,45 @@
     <img id="woman-photo" class="photo" src="woman.png" alt="Woman">
 
     <script>
+        // Names Modal
+        const namesModal = document.getElementById("names-modal");
+        const namesSubmit = document.getElementById("names-submit");
+        const player1Input = document.getElementById("player1-name");
+        const player2Input = document.getElementById("player2-name");
+        
+        let player1Name = "בו";
+        let player2Name = "בייב";
+
+        namesSubmit.addEventListener("click", () => {
+            const name1 = player1Input.value.trim() || "מר";
+            const name2 = player2Input.value.trim() || "גברת";
+            
+            player1Name = name1;
+            player2Name = name2;
+            
+            // Update both headers
+            const headerText = `ערב הדייט של ${name1} ו${name2} 💋`;
+            document.getElementById("menu-header").textContent = headerText;
+            document.getElementById("game-header").textContent = headerText;
+            
+            // Show menu immediately with full opacity, then hide names modal
+            menuContainer.style.display = "flex";
+            menuContainer.style.opacity = "1";
+            namesModal.style.display = "none";
+        });
+
+        // Allow Enter key to submit
+        player2Input.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                namesSubmit.click();
+            }
+        });
+        player1Input.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                namesSubmit.click();
+            }
+        });
+
         // Initial Menu
         const menuContainer = document.getElementById("menu-container");
         const instructionsContainer = document.getElementById("instructions-container");
