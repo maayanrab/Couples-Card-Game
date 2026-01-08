@@ -419,7 +419,7 @@ button {
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 20; /* Sit on top of menu containers (which have z-index: 10) */
     inset: 0;
     width: 100%;
     height: 100%;
@@ -449,4 +449,26 @@ button {
     margin-top: 20px;
     position: relative; /* Needed for z-index */
     z-index: 3; /* Buttons above content */
+}
+
+.upload-message {
+    margin: 15px 0;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.upload-message.success {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: #2e7d32;
+    border: 2px solid #4caf50;
+}
+
+.upload-message.error {
+    background-color: rgba(244, 67, 54, 0.2);
+    color: #c62828;
+    border: 2px solid #f44336;
 }
